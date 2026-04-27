@@ -1,0 +1,1 @@
+# mini-belt-characterization
