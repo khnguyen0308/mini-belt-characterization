@@ -1,0 +1,192 @@
+\section{Code Understanding}
+The \texttt{main.c} file implements an embedded impedance spectroscopy system on an STM32 microcontroller. It generates a multi-sine excitation signal via DAC, acquires the hardware response simultaneously through two independent ADCs using DMA, and processes the signals in the frequency domain using either the Fast Fourier Transform (FFT) or the Goertzel algorithm.
+
+\subsection{Setup}
+\begin{lstlisting}
+// Start DMA / DAC 3
+HAL_DAC_Start_DMA(&hdac1, DAC_CHANNEL_1, signal, SIGNAL_LENGTH, DAC_ALIGN_12B_R);
+HAL_TIM_Base_Start(&htim4);
+
+serialPrint(&huart3, "Calibrating ADCs\r\n");
+// Calibrate ADCs
+HAL_ADCEx_Calibration_Start(&hadc1, ADC_CALIB_OFFSET, ADC_SINGLE_ENDED);
+HAL_ADCEx_Calibration_Start(&hadc2, ADC_CALIB_OFFSET, ADC_SINGLE_ENDED);
+
+serialPrint(&huart3, "Starting ADC1/2, TIM2, DMA\r\n");
+// Start DMA & ADC 1/2
+HAL_ADC_Start_DMA(&hadc1, (uint32_t *)AdcBuffer1, ACQ_LENGTH);
+HAL_ADC_Start_DMA(&hadc2, (uint32_t *)AdcBuffer2, ACQ_LENGTH);
+
+HAL_TIM_Base_Start(&htim2);
+
+serialPrint(&huart3, "Forwarding to main loop...\r\n");
+\end{lstlisting}
+
+\begin{itemize}
+
+    \item \textbf{Signal Generation (DAC \& TIM4):} The Digital-to-Analog Converter (DAC) is started in DMA mode. This allows the hardware to continuously stream the predefined excitation array ( \inlinecode{signal} ) to the analog output pin without CPU intervention. Timer 4 ( \inlinecode{htim4} ) is enabled to act as the trigger source, dictating the precise update rate of the DAC.
+
+    \item \textbf{Hardware Calibration:} Both Analog-to-Digital Converters (ADC1 and ADC2) undergo an internal self-calibration process. This crucial step compensates for inherent physical offset errors, ensuring high accuracy for subsequent phase and magnitude calculations.
+
+    \item \textbf{Data Acquisition (ADC, TIM2 \& DMA):} The ADCs are activated in DMA mode to continuously capture incoming voltage levels and route the raw data directly into designated memory arrays ( \inlinecode{AdcBuffer1} and \inlinecode{AdcBuffer2} ). Finally, Timer 2 ( \inlinecode{htim2} ) is started to serve as the master sampling clock, establishing a strict sampling frequency for both ADCs.
+
+\end{itemize}
+\vspace{1.5cm}
+\begin{lstlisting}
+if ((DmaCpltFlag1 == 1))
+{
+    DmaCpltFlag1 = 0;
+    HAL_TIM_Base_Stop(&htim2);
+    .
+    .
+    .
+    HAL_TIM_Base_Start(&htim2);
+}
+\end{lstlisting}
+
+\begin{itemize}
+    \item \textbf{Condition Check \& Flag Reset:} The system checks if the DMA has completely filled the buffer (\texttt{DmaCpltFlag1 == 1}). If true, the flag is immediately reset to 0 to acknowledge the completion event.
+
+    \item \textbf{Pause Acquisition (\texttt{HAL\_TIM\_Base\_Stop}):} Timer 2, which serves as the trigger source for the ADC, is halted. This safely "freezes" the acquisition process, ensuring the data buffer remains stable and preventing ADC overrun errors.
+
+    \item \textbf{Resume Acquisition (\texttt{HAL\_TIM\_Base\_Start}):} Once the CPU finishes processing the current data block, Timer 2 is reactivated to trigger the ADC again, starting the next data acquisition cycle.
+\end{itemize}
+
+\subsection{Signal Processing}
+4 modes: \inlinecode{SIGNAL\_OUT}, \inlinecode{SIGNAL\_OUT\_SERIALPLOT\_STYLE}, \inlinecode{FFT}, \inlinecode{GOERTZEL}
+
+\subsubsection{\inlinecode{SIGNAL\_OUT} defined?}
+\begin{lstlisting}
+#ifdef SIGNAL_OUT
+    char message[20];
+    int cnt = 0;
+
+    serialPrint(&huart3, "Signal writing...\r\n");
+    for (cnt = 0; cnt < ACQ_LENGTH; cnt++)
+    {       
+#ifdef SIGNAL_OUT_SERIALPLOT_STYLE
+        sprintf(message, "%d,%d\r\n", AdcBuffer1[cnt], AdcBuffer2[cnt]);
+        HAL_UART_Transmit(&huart3, (uint8_t *)message, strlen(message), 500);
+
+#else
+        sprintf(message, "ADC1(%4d)=%4d;\r\n", cnt + 1, AdcBuffer1[cnt]);
+        HAL_UART_Transmit(&huart3, (uint8_t *)message, 18, 500);
+
+        sprintf(message, "ADC2(%4d)=%4d;\r\n", cnt + 1, AdcBuffer2[cnt]);
+        HAL_UART_Transmit(&huart3, (uint8_t *)message, 18, 500);
+
+#endif
+
+        //
+
+        //	  	  		 	HAL_Delay(10);
+    }
+    serialPrint(&huart3, "Signal writing done\r\n");
+#endif
+\end{lstlisting}
+
+\begin{itemize}
+    \item \textbf{\inlinecode{SIGNAL\_OUT\_SERIALPLOT\_STYLE} defined}: If this macro is defined, the output format is optimized for real-time plotting tools (e.g., SerialPlot). Each line contains a pair of ADC values separated by a comma, making it easy for plotting software to parse and visualize the data in real time.
+    \item \textbf{\inlinecode{SIGNAL\_OUT\_SERIALPLOT\_STYLE} not defined}: The output is more verbose and human-readable. Each ADC value is printed on a separate line with an index, which is useful for debugging or offline analysis but less efficient for real-time plotting.
+
+\end{itemize}
+
+\subsubsection{\inlinecode{FFT} defined?}
+\begin{lstlisting}
+#ifdef FFT
+
+      uint8_t message[50];
+
+      float32_t Magnitude[SIZE_F];
+      float32_t Magnitude1[SIZE_F];
+      float32_t Magnitude2[SIZE_F];
+      float32_t Phase[SIZE_F];
+      float32_t Theta1[SIZE_F];
+      float32_t Theta2[SIZE_F];
+
+      float32_t fft_inputbuf[ACQ_LENGTH * 2];
+      // int16_t fft_inputbuf[ACQ_LENGTH * 2];
+      for (int i = 0; i < ACQ_LENGTH; i++)
+      {
+
+        fft_inputbuf[i * 2] = AdcBuffer1[i];
+        fft_inputbuf[i * 2 + 1] = 0;
+      }
+
+      if(ACQ_LENGTH==2048)       arm_cfft_f32(&arm_cfft_sR_f32_len2048, fft_inputbuf, 0, 1);
+      else if(ACQ_LENGTH == 4096) arm_cfft_f32(&arm_cfft_sR_f32_len4096, fft_inputbuf, 0, 1);
+
+  //     if(ACQ_LENGTH==2048)       arm_cfft_q15(&arm_cfft_sR_q15_len2048, fft_inputbuf, 0, 1);
+    //     else if(ACQ_LENGTH == 4096) arm_cfft_q15(&arm_cfft_sR_q15_len4096, fft_inputbuf, 0, 1);
+
+
+      for (int i = 0; i < SIZE_F; i++)
+      {
+
+        float32_t in1 = fft_inputbuf[f_freqbins_map[i] * 2];
+        float32_t in2 = fft_inputbuf[f_freqbins_map[i] * 2 + 1];
+        Theta1[i] = atan2(in2, in1);
+
+        float32_t input1 = fft_inputbuf[f_freqbins_map[i] * 2];
+        float32_t input2 = fft_inputbuf[f_freqbins_map[i] * 2 + 1];
+        Magnitude1[i] = (float)sqrt((input1 * input1) + (input2 * input2));
+
+      } // FFT_ADC1_END
+
+      // FFT_ADC2_ START
+      for (int i = 0; i < ACQ_LENGTH; i++)
+      {
+
+        fft_inputbuf[i * 2] = AdcBuffer2[i];
+        fft_inputbuf[i * 2 + 1] = 0;
+      }
+
+      if(ACQ_LENGTH==2048) arm_cfft_f32(&arm_cfft_sR_f32_len2048, fft_inputbuf, 0, 1);
+      else if(ACQ_LENGTH == 4096) arm_cfft_f32(&arm_cfft_sR_f32_len4096, fft_inputbuf, 0, 1);
+
+      //     if(ACQ_LENGTH==2048)       arm_cfft_q15(&arm_cfft_sR_q15_len2048, fft_inputbuf, 0, 1);
+        //     else if(ACQ_LENGTH == 4096) arm_cfft_q15(&arm_cfft_sR_q15_len4096, fft_inputbuf, 0, 1);
+
+      for (int i = 0; i < SIZE_F; i++)
+      {
+
+        float32_t in1 = fft_inputbuf[f_freqbins_map[i] * 2];
+        float32_t in2 = fft_inputbuf[f_freqbins_map[i] * 2 + 1];
+        Theta2[i] = atan2(in2, in1);
+
+        float32_t input1 = fft_inputbuf[f_freqbins_map[i] * 2];
+        float32_t input2 = fft_inputbuf[f_freqbins_map[i] * 2 + 1];
+
+        Magnitude2[i] = (float)sqrt((input1 * input1) + (input2 * input2));
+
+        Phase[i] = (float)((Theta1[i] - Theta2[i]) * (180 / PI)) + 180; //+90;
+        Phase[i] = fmod(Phase[i] - 360, 360);
+        Magnitude[i] = (float)(Magnitude1[i] / Magnitude2[i]) * 1000;
+
+        //accumulate
+        if (accPhase[i] == 0) accPhase[i] = Phase[i];
+        if (accMagnitude[i] == 0) accMagnitude[i] = Magnitude[i];
+        accPhase[i] = accPhase[i] * accFactor + Phase[i] * (1-accFactor);
+        accMagnitude[i] = accMagnitude[i] * accFactor + Magnitude[i] * (1-accFactor);
+      }
+\end{lstlisting}
+
+\begin{itemize}
+    \item \textbf{Data Formatting for CMSIS-DSP (\texttt{fft\_inputbuf}):} The \texttt{arm\_cfft\_f32} function requires a complex input array where real and imaginary parts are interleaved. The loop fills the even indices with raw ADC data (Real part) and sets the odd indices to 0 (Imaginary part).
+    
+    \item \textbf{Fast Fourier Transform Execution:} The hardware-accelerated 32-bit floating-point FFT function (\texttt{arm\_cfft\_f32}) is executed. It dynamically selects the pre-computed twiddle factor tables (\texttt{arm\_cfft\_sR\_f32\_len2048} or \texttt{4096}) based on the defined acquisition length (\texttt{ACQ\_LENGTH}). Fixed-point operations (\texttt{q15}) are commented out, indicating a preference for floating-point precision over execution speed in this phase.
+    
+    \item \textbf{Magnitude \& Phase Extraction:} Rather than processing the entire spectrum, the algorithm optimally extracts data only at specific target frequency bins defined by \texttt{f\_freqbins\_map}. For both ADC1 and ADC2:
+    \begin{itemize}
+        \item Phase (\texttt{Theta}) is calculated using the four-quadrant inverse tangent function (\texttt{atan2(imaginary, real)}).
+        \item Magnitude is computed using the Euclidean distance: $\sqrt{\mathrm{real}^2 + \mathrm{imaginary}^2}$.
+    \end{itemize}
+    
+    \item \textbf{Relative Signal Analysis:} The core objective of the system is evaluated here:
+    \begin{itemize}
+        \item \textbf{Relative Phase:} The phase difference between ADC1 and ADC2 is calculated, converted from radians to degrees (\texttt{180 / PI}), shifted by an offset, and then wrapped within a 360-degree range using the modulo function (\texttt{fmod}).
+        \item \textbf{Relative Magnitude:} The magnitude ratio (\texttt{Magnitude1 / Magnitude2}) is calculated and scaled by a factor of 1000.
+    \end{itemize}
+    
+    \item \textbf{Data Smoothing (Exponential Moving Average):} To mitigate high-frequency noise and stabilize the readings over multiple acquisition cycles, an IIR (Infinite Impulse Response) filter is applied to the final values. The accumulated values (\texttt{accPhase} and \texttt{accMagnitude}) are updated using a weighting factor (\texttt{accFactor}), prioritizing historical data while slowly incorporating new measurements.
+\end{itemize}

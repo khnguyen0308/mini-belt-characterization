@@ -1,0 +1,26 @@
+# LaTeX build outputs
+*.aux
+*.bcf
+*.blg
+*.bbl
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.run.xml
+*.synctex.gz
+*.toc
+*.lof
+*.lot
+*.nav
+*.snm
+
+# Generated PDFs
+*.pdf
+
+# VS Code workspace settings
+.vscode/
+
+# OS metadata
+Thumbs.db
+.DS_Store

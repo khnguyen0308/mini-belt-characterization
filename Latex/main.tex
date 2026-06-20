@@ -1,0 +1,105 @@
+\documentclass[12pt,a4paper]{article}
+
+% ── Language & Encoding ─────────────────────────────────────────────────────
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+
+% ── Layout & Typography ─────────────────────────────────────────────────────
+\usepackage[top=2.5cm, bottom=2.5cm, left=3cm, right=2.5cm]{geometry}
+\usepackage{parskip}
+\usepackage{amsmath}
+
+% ── Code Listing Style ──────────────────────────────────────────────────────
+\usepackage{listings}
+\usepackage{xcolor}
+\newcommand{\inlinecode}[1]{\colorbox{codebg}{\texttt{#1}}}
+\definecolor{codebg}{gray}{0.93} 
+\lstset{
+    language=C,
+    basicstyle=\ttfamily\small,          % Font chữ và kích thước
+    keywordstyle=\color{blue}\bfseries,  % Màu cho từ khóa (ví dụ: int, return)
+    stringstyle=\color{red},             % Màu cho chuỗi (ví dụ: "Hello")
+    commentstyle=\color{green!60!black}, % Màu cho chú thích
+    numbers=left,                        % Đánh số dòng bên trái
+    numberstyle=\tiny\color{gray},       % Kiểu số dòng
+    stepnumber=1,
+    breaklines=true,                     % Tự động xuống dòng nếu code quá dài
+    frame=single,                        % Đóng khung đoạn code
+    tabsize=4,                           % Khoảng cách tab
+    showstringspaces=false               % Không hiển thị ký tự khoảng trắng trong chuỗi
+}
+% ... (Keep the rest of your listing definitions here) ...
+
+% ── Graphics & Hyperlinks ───────────────────────────────────────────────────
+\usepackage{graphicx}
+\usepackage[colorlinks=true, linkcolor=blue, urlcolor=blue]{hyperref}
+
+% ── Bibliography Setup (ADDED HERE) ─────────────────────────────────────────
+\usepackage[style=numeric, sorting=none]{biblatex} 
+\addbibresource{references.bib}    % Points to your specific .bib file
+
+\title{\textbf{Project Lab of Embedded Systems}}
+\author{Group 15}
+\date{May 15, 2026}
+
+\begin{document}
+\begin{titlepage}
+    \centering
+    
+    % ── University Logo ──
+    % Replace 'TU_Chemnitz_Logo_gruen.svg.png' with your logo file name
+    \includegraphics[width=0.7\textwidth]{TU_Chemnitz_Logo_gruen.svg.png} \\[0cm]
+    
+    % ── Department & Chair Info ──
+    {\large Department of Electrical Engineering and Information Technology} \\[0.2cm]
+    {\large Chair of Measurement and Sensor Technology} \\[3cm]
+    
+    % ── Document Type & Lab Course ──
+    {\huge \textbf{Project Documentation}} \\[0.6cm]
+    {\Large ,,Project Lab Embedded Systems``} \\[3.5cm]
+    
+    % ── Metadata Block (Group & Members) ──
+    \begin{flushleft}
+    \large
+    \begin{tabbing}
+        \hspace*{3.5cm} \= \kill
+        \textbf{Group:} \> 15 \\ [0.3cm]
+        \textbf{Members:} \> Gia Khanh Nguyen \\
+                          \> Tuan Minh Le \\
+                          \> Minh Quang Vu \\
+                          \> Khoi Nguyen Nguyen
+    \end{tabbing}
+    \end{flushleft}
+    
+    \vspace{1cm}
+    
+    % ── Project Title ──
+    {\large Project: \textbf{Evaluation of Mini-Belt Characterization System using Impedance Spectroscopy}} \\[1cm]
+    
+    \vfill
+    
+    % ── Date Block ──
+    \begin{flushleft}
+    \large
+    \begin{tabbing}
+        \hspace*{3.5cm} \= \kill
+        \textbf{Date:} \> May 15, 2026
+    \end{tabbing}
+    \end{flushleft}
+
+\end{titlepage}
+% \maketitle
+\tableofcontents
+\newpage
+
+% ── Sub-sections ────────────────────────────────────────────────────────────
+\include{overview}    % Part 1
+\include {literature_review} %Part 2 (Literature review about each components)
+\include{code_understanding}   % Part 3 (Includes and serialPrint)
+\include{Hardware_setup}
+
+
+% ── Generate Bibliography Here ──
+
+\end{document}

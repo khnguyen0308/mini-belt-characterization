@@ -1,0 +1,41 @@
+\section{Introduction}
+% \large \texttt{main.c} -- STM32H7 EIS Signal Processing
+% TODO: Write project description.The Mini-Belt Characterization System is an automated, in-line material analysis platform that combines STM32-based Electrochemical Impedance Spectroscopy (EIS) with a miniature conveyor belt and Interdigitated Electrodes (IDEs)[cite: 95]. The system is designed to perform real-time quality monitoring of moving materials, analyzing factors such as moisture content, freshness, and curing state without stopping the production line[cite: 96]. This architecture is specifically targeted for research into smart manufacturing and food processing applications[cite: 98].
+
+% \subsection{Methodology and System Architecture}
+% Instead of relying on static lab measurements, the system utilizes Multisine broadband excitation to capture high-speed impedance fingerprints as samples pass over the characterization zone[cite: 97]. To achieve this, the project integrates hardware, software, and machine learning components across several key sub-systems.
+
+% \begin{itemize}
+%     \item \textbf{Miniature Conveyor Hardware:} A compact belt assembly is driven by a stepper motor for precise speed control[cite: 101]. It utilizes a "floating header" sensor mount to ensure consistent IDE contact with the moving samples[cite: 102]. Additionally, an optical encoder tracks the belt's position to allow for accurate timestamp correlation[cite: 103, 112].
+    
+%     \item \textbf{Multisine Signal Generation:} The STM32 Digital-to-Analog Converter (DAC) generates an optimized broadband excitation signal ranging from 1 Hz to 10 kHz[cite: 105]. This output is DMA-driven to ensure jitter-free synthesis, and incorporates phase optimization algorithms to minimize the crest factor[cite: 106, 107].
+    
+%     \item \textbf{EIS Acquisition and Processing:} High-speed Analog-to-Digital Converters (ADCs) sample the voltage and current with precise phase alignment[cite: 109]. The complex impedance is extracted in real time using on-chip FFT-based Discrete Fourier Transform (DFT) computations.
+% \end{itemize}
+
+% \subsection{Data Synchronization, Visualization, and Machine Learning}
+% To map the material properties spatially, the system dynamically adjusts its sampling rates based on the conveyor speed and generates impedance versus belt position heatmaps[cite: 113, 114]. The acquired spectral data is streamed via UART or USB-CDC to a host machine[cite: 118]. On the host side, a Python-based graphical user interface (built with matplotlib or pyqtgraph) visualizes the data through real-time Nyquist and Bode plots[cite: 116]. Finally, the system leverages machine learning algorithms to perform real-time characterization of the analyzed materials[cite: 117].
+\subsection{Abstract}
+The Mini-Belt Characterization System is an automated, in-line material analysis platform designed to perform real-time quality monitoring without stopping the production line. The architecture integrates an STM32-based Electrochemical Impedance Spectroscopy (EIS) module with a miniature conveyor belt and a "floating header" mount for Interdigitated Electrodes (IDEs). \textbf{To capture high-speed impedance fingerprints from moving samples, the system utilizes an optimized Multisine broadband excitation ranging from 1 Hz to 10 kHz, which is DMA-driven for jitter-free synthesis and optimized for crest factor minimization}. An optical encoder tracks the belt's position for precise timestamp correlation, enabling dynamic sampling rate adjustments and the generation of spatial impedance heatmaps. Complex impedance is extracted in real time via on-chip FFT-based Discrete Fourier Transform (DFT) computations. The data is then streamed via UART or USB-CDC to a Python-based host interface for real-time visualization—including Nyquist and Bode plots—and further evaluated using machine learning algorithms. Ultimately, this system is targeted for research into smart manufacturing and food processing applications, providing continuous assessments of parameters such as moisture content, freshness, and curing state.
+% \subsection{Project overview}
+
+% This report details the development of the Mini-Belt Characterization System, an automated, small-scale conveyor platform designed for the continuous analysis of materials in motion. The system leverages an STM32 microcontroller and Electrochemical Impedance Spectroscopy (EIS) to facilitate real-time quality monitoring—such as assessing moisture content, curing state, or freshness—without necessitating interruptions to the production line. 
+
+% In contrast to traditional, stationary laboratory measurements, the implemented architecture employs broadband Multisine signals to rapidly acquire the impedance fingerprints of materials as they traverse over Interdigitated Electrodes (IDEs). By integrating custom mechanical hardware, embedded signal processing, and machine learning algorithms, this project presents a viable real-time monitoring solution highly applicable to smart manufacturing and food processing environments.
+
+\subsection{Project outline}
+This report is structured to provide a comprehensive overview of the system's development, theoretical foundation, and empirical validation. The subsequent sections are organized as follows:
+
+\begin{itemize}
+    \item \textbf{Section 1 (Introduction):} This section will present the research problem and overall objectives of the work. It establishes the context by outlining the relevance of Mini-Belt Characterization System using Impedance Spectroscopy and defining the scope of this project.
+
+    \item \textbf{Section 2 (Theoretical Background):} This section provides the foundational scientific and mathematical principles governing the system. It covers the fundamentals of Electrochemical Impedance Spectroscopy (EIS) and the rationale for utilizing Multisine broadband excitation. Additionally, it details the specific signal processing algorithms—namely, the Fast Fourier Transform (FFT) and the Goertzel algorithm—employed for on-chip impedance calculation, \textbf{alongside an introduction to the machine learning concepts used for material characterization}.
+    
+    \item \textbf{Section 3 (Hardware and Software Implementation):} This segment details the engineering and architectural design of the platform. It is subdivided into hardware design (encompassing the miniature conveyor, stepper motor, optical encoder, and floating header Interdigitated Electrode mechanism), embedded firmware development (focusing on the STM32 microcontroller configuration and DMA-synchronized data acquisition), and host interface architecture (detailing the Python-based graphical interface and data streaming protocols).
+    
+    \item \textbf{Section 4 (Experiments and Results):} This section outlines the testing methodology and presents the data gathered during system validation. It includes an evaluation of the multisine signal generation, verifies the accuracy of the EIS measurements through Nyquist and Bode plots, and analyzes the impact of conveyor belt velocity on signal fidelity. Furthermore, it presents the results of the machine learning classification models applied to the material samples.
+    
+    \item \textbf{Section 5 (Conclusion):} The final section synthesizes the project's outcomes, assessing the overall efficacy of the real-time, in-line characterization system. It critically discusses the technical limitations encountered during the development phase and proposes potential avenues for future enhancement, such as accommodating higher operational speeds or optimizing the sensor topology.
+\end{itemize}
+
+\subsection{General objective}
