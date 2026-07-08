@@ -9,6 +9,7 @@
 \usepackage[top=2.5cm, bottom=2.5cm, left=3cm, right=2.5cm]{geometry}
 \usepackage{parskip}
 \usepackage{amsmath}
+\usepackage{csquotes}
 
 % ── Code Listing Style ──────────────────────────────────────────────────────
 \usepackage{listings}
@@ -33,6 +34,8 @@
 
 % ── Graphics & Hyperlinks ───────────────────────────────────────────────────
 \usepackage{graphicx}
+\graphicspath{{imgs/}}
+\usepackage{xurl}
 \usepackage[colorlinks=true, linkcolor=blue, urlcolor=blue]{hyperref}
 
 % ── Bibliography Setup (ADDED HERE) ─────────────────────────────────────────
@@ -49,7 +52,7 @@
     
     % ── University Logo ──
     % Replace 'TU_Chemnitz_Logo_gruen.svg.png' with your logo file name
-    \includegraphics[width=0.7\textwidth]{imgs/TU_Chemnitz_Logo_gruen.svg.png} \\[0cm]
+    \includegraphics[width=0.7\textwidth]{TU_Chemnitz_Logo_gruen.svg.png} \\[0cm]
     
     % ── Department & Chair Info ──
     {\large Department of Electrical Engineering and Information Technology} \\[0.2cm]
@@ -94,10 +97,10 @@
 \newpage
 
 % ── Sub-sections ────────────────────────────────────────────────────────────
-\include{section/overview}            % Part 1
-\include{section/literature_review}   % Part 2
-\include{section/code_understanding}  % Part 3
-\include{section/Hardware_setup}      % Part 4
+\include{section/overview}    % Part 1
+\include {section/literature_review} %Part 2 (Literature review about each components)
+\include{section/code_understanding}   % Part 3 (Includes and serialPrint)
+\include{section/Hardware_setup}
 
 
 % ── Generate Bibliography Here ──
