@@ -1,0 +1,4 @@
+../Core/Src/Include/goertzel.c:17:6:goertzel_init2	1
+../Core/Src/Include/goertzel.c:31:6:goertzel_init	1
+../Core/Src/Include/goertzel.c:44:6:goertzel	1
+../Core/Src/Include/goertzel.c:57:6:goertzel_end	1

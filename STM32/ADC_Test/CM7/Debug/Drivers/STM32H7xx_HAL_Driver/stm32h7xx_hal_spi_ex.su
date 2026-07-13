@@ -1,0 +1,3 @@
+D:/Master_Work/Sem_2/Project for Embedded Systems/ADC_Test/ADC_Test/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c:74:19:HAL_SPIEx_FlushRxFifo	32	static
+D:/Master_Work/Sem_2/Project for Embedded Systems/ADC_Test/ADC_Test/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c:113:19:HAL_SPIEx_EnableLockConfiguration	24	static
+D:/Master_Work/Sem_2/Project for Embedded Systems/ADC_Test/ADC_Test/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c:161:19:HAL_SPIEx_ConfigureUnderrun	32	static

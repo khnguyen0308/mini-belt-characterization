@@ -1,0 +1,4 @@
+../Core/Src/Include/goertzel.c:17:6:goertzel_init2	24	static
+../Core/Src/Include/goertzel.c:31:6:goertzel_init	32	static
+../Core/Src/Include/goertzel.c:44:6:goertzel	16	static
+../Core/Src/Include/goertzel.c:57:6:goertzel_end	24	static
