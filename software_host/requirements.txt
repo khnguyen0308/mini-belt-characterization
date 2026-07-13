@@ -1,0 +1,37 @@
+# Mini-Belt Characterization System - Real-time EIS GUI
+# Python Dependencies
+
+# Core GUI Framework
+PyQt6==6.7.1
+PyQt6-Qt6==6.7.2
+PyQt6-sip==13.8.0
+
+# Real-time Plotting Library (high-performance graphics)
+pyqtgraph==0.13.7
+
+# Scientific Computing
+numpy==1.24.3
+scipy==1.11.4
+scikit-learn==1.3.2
+
+# Serial Communication
+pyserial==3.5
+
+# Data Handling
+pandas==2.1.3
+
+# Machine Learning & Model Management
+joblib==1.3.2         # Save/Load ML models
+xgboost==2.0.3        # Gradient Boosting (optional, high performance)
+tensorflow==2.14.0    # Deep Learning (optional, for advanced models)
+
+# Optional: Advanced Analysis
+matplotlib==3.8.2  # Alternative to pyqtgraph (slower for real-time)
+plotly==5.18.0     # Interactive web-based plots
+seaborn==0.12.2    # Statistical data visualization
+
+# Development Tools (optional)
+# pytest==7.4.3
+# black==23.12.1
+# flake8==6.1.0
+# sphinx==7.2.6

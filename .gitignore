@@ -43,6 +43,7 @@
 build/
 Build/
 build-*/
+/bin/
 
 # CMake generated files
 CMakeFiles/
@@ -67,3 +68,12 @@ vcpkg_installed/
 # test output & cache
 Testing/
 .cache/
+software_host/old_SeriPlot.py
+software_host/data_pipeline_old.ipynb
+software_host/data/process_data_old
+software_host/data/raw_data_old
+software_host/data_process.ipynb
+software_host/physic_extraction.ipynb
+software_host/physics_extraction_V3.py
+software_host/physics_extraction_V2.py
+software_host/regression_Old.ipynb
