@@ -1,8 +1,8 @@
-D:/Master_Work/Sem_2/Project for Embedded Systems/ADC_Test/ADC_Test/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_gpio.c:165:6:HAL_GPIO_Init	24
-D:/Master_Work/Sem_2/Project for Embedded Systems/ADC_Test/ADC_Test/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_gpio.c:303:6:HAL_GPIO_DeInit	14
-D:/Master_Work/Sem_2/Project for Embedded Systems/ADC_Test/ADC_Test/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_gpio.c:390:15:HAL_GPIO_ReadPin	2
-D:/Master_Work/Sem_2/Project for Embedded Systems/ADC_Test/ADC_Test/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_gpio.c:424:6:HAL_GPIO_WritePin	2
-D:/Master_Work/Sem_2/Project for Embedded Systems/ADC_Test/ADC_Test/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_gpio.c:446:6:HAL_GPIO_TogglePin	1
-D:/Master_Work/Sem_2/Project for Embedded Systems/ADC_Test/ADC_Test/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_gpio.c:471:19:HAL_GPIO_LockPin	2
-D:/Master_Work/Sem_2/Project for Embedded Systems/ADC_Test/ADC_Test/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_gpio.c:506:6:HAL_GPIO_EXTI_IRQHandler	2
-D:/Master_Work/Sem_2/Project for Embedded Systems/ADC_Test/ADC_Test/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_gpio.c:529:13:HAL_GPIO_EXTI_Callback	1
+D:/TUChemnitz/2.Sem/1.Project_Lab_Embedded_Systems/mini-belt-characterization/STM32/ADC_Test/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_gpio.c:165:6:HAL_GPIO_Init	24
+D:/TUChemnitz/2.Sem/1.Project_Lab_Embedded_Systems/mini-belt-characterization/STM32/ADC_Test/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_gpio.c:303:6:HAL_GPIO_DeInit	14
+D:/TUChemnitz/2.Sem/1.Project_Lab_Embedded_Systems/mini-belt-characterization/STM32/ADC_Test/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_gpio.c:390:15:HAL_GPIO_ReadPin	2
+D:/TUChemnitz/2.Sem/1.Project_Lab_Embedded_Systems/mini-belt-characterization/STM32/ADC_Test/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_gpio.c:424:6:HAL_GPIO_WritePin	2
+D:/TUChemnitz/2.Sem/1.Project_Lab_Embedded_Systems/mini-belt-characterization/STM32/ADC_Test/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_gpio.c:446:6:HAL_GPIO_TogglePin	1
+D:/TUChemnitz/2.Sem/1.Project_Lab_Embedded_Systems/mini-belt-characterization/STM32/ADC_Test/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_gpio.c:471:19:HAL_GPIO_LockPin	2
+D:/TUChemnitz/2.Sem/1.Project_Lab_Embedded_Systems/mini-belt-characterization/STM32/ADC_Test/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_gpio.c:506:6:HAL_GPIO_EXTI_IRQHandler	2
+D:/TUChemnitz/2.Sem/1.Project_Lab_Embedded_Systems/mini-belt-characterization/STM32/ADC_Test/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_gpio.c:529:13:HAL_GPIO_EXTI_Callback	1
